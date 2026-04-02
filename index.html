@@ -23,35 +23,47 @@
             overflow: hidden;
         }
 
-        /* Overlay Start (Solusi Autoplay) */
+        /* Overlay Start */
         #overlay {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: var(--dark-bg);
+            background: radial-gradient(circle, #111 0%, #000 100%);
             z-index: 100;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             cursor: pointer;
         }
 
         .start-btn {
-            padding: 20px 40px;
+            padding: 25px 50px;
             border: 2px solid var(--neon-blue);
             color: var(--neon-blue);
             font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
             text-transform: uppercase;
-            letter-spacing: 5px;
+            letter-spacing: 3px;
             background: transparent;
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
-            transition: 0.3s;
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+            transition: 0.4s;
+            cursor: pointer;
+            border-radius: 5px;
         }
 
         .start-btn:hover {
             background: var(--neon-blue);
             color: black;
-            box-shadow: 0 0 40px var(--neon-blue);
+            box-shadow: 0 0 50px var(--neon-blue);
+            transform: scale(1.05);
+        }
+
+        .click-hint {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            color: #555;
+            letter-spacing: 2px;
         }
 
         /* Background Grid */
@@ -85,11 +97,11 @@
             z-index: 10;
             height: 100vh;
             width: 100vw;
-            display: none; /* Muncul setelah klik */
+            display: none; 
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.9) 100%);
         }
 
         #clock {
@@ -106,19 +118,19 @@
         .message-box { text-align: center; padding: 20px; width: 90%; max-width: 1000px; }
 
         .label {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--neon-blue);
-            letter-spacing: 8px;
+            letter-spacing: 5px;
             margin-bottom: 25px;
-            opacity: 0.7;
+            opacity: 0.6;
         }
 
         .quote-text {
-            font-size: clamp(1.2rem, 4vw, 2.5rem);
+            font-size: clamp(1.1rem, 4vw, 2.3rem);
             font-weight: 700;
-            line-height: 1.5;
-            min-height: 150px;
-            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            line-height: 1.6;
+            min-height: 140px;
+            transition: all 0.8s ease-in-out;
         }
 
         .highlight {
@@ -127,31 +139,32 @@
         }
 
         .brand {
-            margin-top: 30px;
+            margin-top: 40px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            letter-spacing: 4px;
+            font-size: 1.3rem;
+            letter-spacing: 5px;
+            color: white;
             text-shadow: 0 0 15px var(--neon-blue);
             animation: pulse 2s infinite alternate;
         }
 
-        @keyframes pulse { from { opacity: 0.6; } to { opacity: 1; } }
+        @keyframes pulse { from { opacity: 0.5; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }
 
         .footer {
             position: absolute; bottom: 30px; width: 100%; text-align: center;
-            font-size: 0.7rem; letter-spacing: 2px; color: #333;
+            font-size: 0.7rem; letter-spacing: 2px; color: #444;
         }
     </style>
 </head>
 <body>
 
     <div id="overlay" onclick="startSystem()">
-        <button class="start-btn">Initialize System</button>
+        <button class="start-btn">KLIK DISINI UNTUK MEMULAI</button>
+        <div class="click-hint">INITIALIZING SYSTEM_01...</div>
     </div>
 
     <audio id="bgMusic" loop>
         <source src="music.mp3" type="audio/mpeg">
-        Browser kamu tidak mendukung audio.
     </audio>
 
     <div class="grid-container"><div class="grid"></div></div>
@@ -160,13 +173,13 @@
         <div id="clock">00:00:00</div>
         
         <div class="message-box">
-            <div class="label">// Core_Motivation_System</div>
+            <div class="label">// ACCESS_GRANTED // MOTIVATION_MODE</div>
             <div class="quote-text" id="quote">System Online...</div>
             <div class="brand">@Fahmi_N</div>
         </div>
 
         <div class="footer">
-            Terminal v3.5 | Status: <span style="color: #0f0;">Connected</span> | Audio: <span style="color: #0f0;">Streaming</span>
+            Terminal v4.0 | User: Fahmi | Status: <span style="color: #0f0;">Optimized</span>
         </div>
     </div>
 
@@ -176,14 +189,9 @@
         const dashboard = document.getElementById('mainDashboard');
 
         function startSystem() {
-            // Hilangkan overlay & tampilkan dashboard
             overlay.style.display = 'none';
             dashboard.style.display = 'flex';
-            
-            // Putar musik
-            audio.play().catch(e => console.log("Audio failed to play:", e));
-            
-            // Jalankan Quote pertama
+            audio.play().catch(e => console.log("Audio play blocked."));
             rotateQuote();
         }
 
