@@ -39,10 +39,6 @@ nav {
   backdrop-filter: blur(10px);
 }
 
-.toggle {
-  cursor: pointer;
-}
-
 /* HERO */
 .hero {
   height: 100vh;
@@ -95,6 +91,34 @@ nav {
   text-align: center;
 }
 
+/* AUDIO PLAYER */
+.player {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,255,255,0.05);
+  border-radius: 20px;
+  padding: 15px 25px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px #00f7ff;
+}
+
+.player button {
+  padding: 8px 15px;
+  margin: 5px;
+  border: none;
+  border-radius: 20px;
+  background: #00f7ff;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00f7ff;
+}
+
+canvas {
+  display: block;
+  margin: 10px auto;
+}
+
 /* FOOTER */
 footer {
   text-align: center;
@@ -107,7 +131,7 @@ footer {
 
 <nav>
   <h3>Amix Dev</h3>
-  <div class="toggle" onclick="toggleMode()">🌙 / ☀️</div>
+  <div onclick="toggleMode()" style="cursor:pointer">🌙 / ☀️</div>
 </nav>
 
 <section class="hero">
@@ -123,6 +147,15 @@ footer {
   <p id="visitor">Loading...</p>
 </div>
 
+<!-- AUDIO PLAYER -->
+<div class="player">
+  <canvas id="visualizer" width="300" height="80"></canvas>
+  <button onclick="togglePlay()">▶️ / ⏸️</button>
+  <input type="range" min="0" max="1" step="0.01" onchange="setVolume(this.value)">
+</div>
+
+<audio id="audio" src="music.mp3" loop></audio>
+
 <footer>
   <p>© 2026 Amix Center</p>
 </footer>
@@ -134,7 +167,7 @@ function toggleMode() {
   document.body.classList.toggle("light");
 }
 
-// VISITOR COUNTER (API GRATIS)
+// VISITOR COUNTER
 fetch("https://api.countapi.xyz/hit/amixdev/github")
 .then(res => res.json())
 .then(data => {
@@ -147,6 +180,60 @@ fetch("https://api.quotable.io/random")
 .then(data => {
   document.getElementById("quote").innerText = data.content;
 });
+
+// AUDIO
+const audio = document.getElementById("audio");
+
+window.onload = () => {
+  audio.volume = 0.4;
+  audio.play().catch(()=>{});
+};
+
+function togglePlay() {
+  if(audio.paused){
+    audio.play();
+  } else {
+    audio.pause();
+  }
+}
+
+function setVolume(val){
+  audio.volume = val;
+}
+
+// VISUALIZER
+const canvas = document.getElementById("visualizer");
+const ctx = canvas.getContext("2d");
+
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioCtx.createAnalyser();
+const source = audioCtx.createMediaElementSource(audio);
+
+source.connect(analyser);
+analyser.connect(audioCtx.destination);
+
+analyser.fftSize = 64;
+const bufferLength = analyser.frequencyBinCount;
+const dataArray = new Uint8Array(bufferLength);
+
+function draw(){
+  requestAnimationFrame(draw);
+  analyser.getByteFrequencyData(dataArray);
+
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  let barWidth = (canvas.width / bufferLength);
+  let x = 0;
+
+  for(let i=0;i<bufferLength;i++){
+    let barHeight = dataArray[i];
+    ctx.fillStyle = "#00f7ff";
+    ctx.fillRect(x, canvas.height - barHeight/2, barWidth - 2, barHeight/2);
+    x += barWidth;
+  }
+}
+
+draw();
 </script>
 
 </body>
