@@ -15,33 +15,58 @@
         * { box-sizing: border-box; }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
             background-color: var(--dark-bg);
             color: white;
             font-family: 'JetBrains Mono', monospace;
             overflow: hidden;
         }
 
-        /* Background Grid 3D */
+        /* Overlay Start (Solusi Autoplay) */
+        #overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--dark-bg);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .start-btn {
+            padding: 20px 40px;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            background: transparent;
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+            transition: 0.3s;
+        }
+
+        .start-btn:hover {
+            background: var(--neon-blue);
+            color: black;
+            box-shadow: 0 0 40px var(--neon-blue);
+        }
+
+        /* Background Grid */
         .grid-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             perspective: 1000px;
             z-index: 1;
         }
 
         .grid {
             position: absolute;
-            width: 200%;
-            height: 200%;
-            bottom: -50%;
-            left: -50%;
+            width: 200%; height: 200%;
+            bottom: -50%; left: -50%;
             background-image: 
                 linear-gradient(rgba(0, 242, 255, 0.1) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 242, 255, 0.1) 1px, transparent 1px);
@@ -55,13 +80,12 @@
             100% { transform: rotateX(60deg) translateY(60px); }
         }
 
-        /* Main Dashboard */
         .dashboard {
             position: relative;
             z-index: 10;
             height: 100vh;
             width: 100vw;
-            display: flex;
+            display: none; /* Muncul setelah klik */
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -79,17 +103,11 @@
             margin-bottom: 10px;
         }
 
-        .message-box {
-            text-align: center;
-            padding: 20px;
-            width: 90%;
-            max-width: 1000px;
-        }
+        .message-box { text-align: center; padding: 20px; width: 90%; max-width: 1000px; }
 
         .label {
             font-size: 0.9rem;
             color: var(--neon-blue);
-            text-transform: uppercase;
             letter-spacing: 8px;
             margin-bottom: 25px;
             opacity: 0.7;
@@ -108,50 +126,37 @@
             text-shadow: 0 0 15px var(--neon-purple);
         }
 
-        /* Brand Styling @Fahmi_N */
         .brand {
             margin-top: 30px;
             font-family: 'Orbitron', sans-serif;
             font-size: 1.2rem;
             letter-spacing: 4px;
-            color: white;
-            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
-            opacity: 0.9;
+            text-shadow: 0 0 15px var(--neon-blue);
             animation: pulse 2s infinite alternate;
         }
 
-        @keyframes pulse {
-            from { transform: scale(1); opacity: 0.7; }
-            to { transform: scale(1.05); opacity: 1; }
-        }
+        @keyframes pulse { from { opacity: 0.6; } to { opacity: 1; } }
 
         .footer {
-            position: absolute;
-            bottom: 30px;
-            width: 100%;
-            text-align: center;
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            color: #333;
-            text-transform: uppercase;
+            position: absolute; bottom: 30px; width: 100%; text-align: center;
+            font-size: 0.7rem; letter-spacing: 2px; color: #333;
         }
-
-        .scanline {
-            width: 100%; height: 2px;
-            background: rgba(0, 242, 255, 0.05);
-            position: absolute; top: 0; z-index: 20;
-            animation: scan 6s linear infinite;
-        }
-
-        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
     </style>
 </head>
 <body>
 
-    <div class="scanline"></div>
+    <div id="overlay" onclick="startSystem()">
+        <button class="start-btn">Initialize System</button>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+        Browser kamu tidak mendukung audio.
+    </audio>
+
     <div class="grid-container"><div class="grid"></div></div>
 
-    <div class="dashboard">
+    <div class="dashboard" id="mainDashboard">
         <div id="clock">00:00:00</div>
         
         <div class="message-box">
@@ -161,11 +166,27 @@
         </div>
 
         <div class="footer">
-            Terminal v3.0 | Status: <span style="color: #0f0;">Connected</span> | Dev: <span style="color: #0f0;">Fahmi</span>
+            Terminal v3.5 | Status: <span style="color: #0f0;">Connected</span> | Audio: <span style="color: #0f0;">Streaming</span>
         </div>
     </div>
 
     <script>
+        const audio = document.getElementById('bgMusic');
+        const overlay = document.getElementById('overlay');
+        const dashboard = document.getElementById('mainDashboard');
+
+        function startSystem() {
+            // Hilangkan overlay & tampilkan dashboard
+            overlay.style.display = 'none';
+            dashboard.style.display = 'flex';
+            
+            // Putar musik
+            audio.play().catch(e => console.log("Audio failed to play:", e));
+            
+            // Jalankan Quote pertama
+            rotateQuote();
+        }
+
         function updateClock() {
             const now = new Date();
             const h = String(now.getHours()).padStart(2, '0');
@@ -202,7 +223,6 @@
         }
 
         setInterval(rotateQuote, 5000);
-        setTimeout(rotateQuote, 1000);
     </script>
 </body>
 </html>
