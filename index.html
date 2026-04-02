@@ -1,183 +1,208 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fahmi Dev | Future Tech</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Motivation - Fahmi_N</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-blue: #00f2ff;
+            --neon-purple: #bc13fe;
+            --dark-bg: #050505;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+        * { box-sizing: border-box; }
 
-<style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins', sans-serif;
-}
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-bg);
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            overflow: hidden;
+        }
 
-body{
-  background: linear-gradient(270deg, #0f2027, #203a43, #2c5364);
-  background-size: 600% 600%;
-  animation: gradientMove 12s ease infinite;
-  color:white;
-  overflow-x:hidden;
-}
+        /* Background Grid 3D */
+        .grid-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            perspective: 1000px;
+            z-index: 1;
+        }
 
-/* BACKGROUND ANIMATION */
-@keyframes gradientMove {
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
-}
+        .grid {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            bottom: -50%;
+            left: -50%;
+            background-image: 
+                linear-gradient(rgba(0, 242, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 255, 0.1) 1px, transparent 1px);
+            background-size: 60px 60px;
+            transform: rotateX(60deg);
+            animation: moveGrid 8s linear infinite;
+        }
 
-/* NAV */
-nav{
-  display:flex;
-  justify-content:space-between;
-  padding:20px 40px;
-}
+        @keyframes moveGrid {
+            0% { transform: rotateX(60deg) translateY(0); }
+            100% { transform: rotateX(60deg) translateY(60px); }
+        }
 
-nav h2{
-  color:#00f7ff;
-}
+        /* Main Dashboard */
+        .dashboard {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
+        }
 
-/* HERO */
-.hero{
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-}
+        #clock {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 900;
+            background: linear-gradient(to bottom, #fff, var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.6));
+            margin-bottom: 10px;
+        }
 
-/* TITLE */
-.title{
-  font-size:3rem;
-  background: linear-gradient(90deg,#00f7ff,#00ff88);
-  -webkit-background-clip:text;
-  color:transparent;
-  animation: glow 2s infinite alternate;
-}
+        .message-box {
+            text-align: center;
+            padding: 20px;
+            width: 90%;
+            max-width: 1000px;
+        }
 
-@keyframes glow{
-  from{ text-shadow:0 0 10px #00f7ff;}
-  to{ text-shadow:0 0 25px #00ff88;}
-}
+        .label {
+            font-size: 0.9rem;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            margin-bottom: 25px;
+            opacity: 0.7;
+        }
 
-/* TYPING */
-#typing{
-  margin-top:15px;
-  font-size:1.2rem;
-  opacity:0.8;
-}
+        .quote-text {
+            font-size: clamp(1.2rem, 4vw, 2.5rem);
+            font-weight: 700;
+            line-height: 1.5;
+            min-height: 150px;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-/* BUTTON */
-.btn{
-  margin-top:25px;
-  padding:12px 30px;
-  border-radius:30px;
-  background:linear-gradient(45deg,#00f7ff,#00ff88);
-  color:black;
-  text-decoration:none;
-  transition:0.3s;
-}
+        .highlight {
+            color: var(--neon-purple);
+            text-shadow: 0 0 15px var(--neon-purple);
+        }
 
-.btn:hover{
-  transform:scale(1.1);
-}
+        /* Brand Styling @Fahmi_N */
+        .brand {
+            margin-top: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            color: white;
+            text-shadow: 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue);
+            opacity: 0.9;
+            animation: pulse 2s infinite alternate;
+        }
 
-/* CARDS */
-.features{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  padding:60px 20px;
-}
+        @keyframes pulse {
+            from { transform: scale(1); opacity: 0.7; }
+            to { transform: scale(1.05); opacity: 1; }
+        }
 
-.card{
-  width:260px;
-  margin:15px;
-  padding:20px;
-  border-radius:15px;
-  background:rgba(255,255,255,0.1);
-  backdrop-filter:blur(10px);
-  transition:0.3s;
-}
+        .footer {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: #333;
+            text-transform: uppercase;
+        }
 
-.card:hover{
-  transform:translateY(-10px) scale(1.05);
-}
+        .scanline {
+            width: 100%; height: 2px;
+            background: rgba(0, 242, 255, 0.05);
+            position: absolute; top: 0; z-index: 20;
+            animation: scan 6s linear infinite;
+        }
 
-/* FOOTER */
-footer{
-  text-align:center;
-  padding:30px;
-  opacity:0.7;
-}
-</style>
+        @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
+    </style>
 </head>
-
 <body>
 
-<nav>
-  <h2>⚡ Fahmi Dev</h2>
-  <div>Future Tools</div>
-</nav>
+    <div class="scanline"></div>
+    <div class="grid-container"><div class="grid"></div></div>
 
-<section class="hero">
-  <h1 class="title">Build The Future</h1>
-  <p id="typing"></p>
-  <a href="#" class="btn">🚀 Explore</a>
-</section>
+    <div class="dashboard">
+        <div id="clock">00:00:00</div>
+        
+        <div class="message-box">
+            <div class="label">// Core_Motivation_System</div>
+            <div class="quote-text" id="quote">System Online...</div>
+            <div class="brand">@Fahmi_N</div>
+        </div>
 
-<section class="features">
-  <div class="card">⚡ Fast Development</div>
-  <div class="card">🧠 Smart Automation</div>
-  <div class="card">🌐 Networking Tools</div>
-  <div class="card">🤖 AI Integration</div>
-</section>
+        <div class="footer">
+            Terminal v3.0 | Status: <span style="color: #0f0;">Connected</span> | Dev: <span style="color: #0f0;">Fahmi</span>
+        </div>
+    </div>
 
-<footer>
-  © 2026 Fahmi Dev | All Rights Reserved
-</footer>
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').innerText = `${h}:${m}:${s}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
 
-<!-- AUDIO AUTOPLAY -->
-<audio id="music" autoplay loop muted>
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
+        const quotes = [
+            "Jangan hanya jadi <span class='highlight'>User</span>, jadilah <span class='highlight'>Creator</span> bagi masa depanmu.",
+            "Lakukan <span class='highlight'>Debug</span> pada kegagalan, karena sukses butuh iterasi.",
+            "Hidupmu adalah <span class='highlight'>Source Code</span> paling berharga, tuliskan dengan bangga.",
+            "Jangan biarkan impianmu hanya ada di <span class='highlight'>Localhost</span>. Deploy sekarang!",
+            "Hadapi masalah dengan logika <span class='highlight'>Algorithm</span>, selesaikan dengan hati.",
+            "Setiap hari adalah <span class='highlight'>Update</span> baru untuk menjadi versi terbaik dirimu.",
+            "Koneksi lambat bukan masalah, yang penting jangan pernah <span class='highlight'>Disconnect</span> dari mimpimu.",
+            "Berhenti <span class='highlight'>Looping</span> di masa lalu. Saatnya me-render masa depan baru."
+        ];
 
-<script>
-// TYPING EFFECT
-const text = "Developer | Networking | Linux | AI Tools | Automation";
-let i = 0;
-function typing(){
-  if(i < text.length){
-    document.getElementById("typing").innerHTML += text.charAt(i);
-    i++;
-    setTimeout(typing, 50);
-  }
-}
-typing();
+        let index = 0;
+        function rotateQuote() {
+            const qElement = document.getElementById('quote');
+            qElement.style.opacity = "0";
+            qElement.style.filter = "blur(10px)";
+            
+            setTimeout(() => {
+                qElement.innerHTML = quotes[index];
+                qElement.style.opacity = "1";
+                qElement.style.filter = "blur(0)";
+                index = (index + 1) % quotes.length;
+            }, 800);
+        }
 
-
-// AUTOPLAY FIX
-const music = document.getElementById("music");
-
-window.addEventListener("load", () => {
-  music.volume = 0.3;
-  setTimeout(()=>{
-    music.muted = false;
-    music.play();
-  }, 2000);
-});
-
-// Jika user klik dimana saja → play
-document.body.addEventListener("click", () => {
-  music.muted = false;
-  music.play();
-});
-</script>
-
+        setInterval(rotateQuote, 5000);
+        setTimeout(rotateQuote, 1000);
+    </script>
 </body>
 </html>
