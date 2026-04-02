@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>For You</title>
+
+<style>
+body{
+    margin:0;
+    background:black;
+    color:white;
+    font-family: monospace;
+    text-align:center;
+    overflow:hidden;
+}
+
+#text{
+    position:absolute;
+    top:40%;
+    width:100%;
+    font-size:6vw;
+    padding:20px;
+}
+
+/* Bintang */
+.star{
+    position:absolute;
+    width:2px;
+    height:2px;
+    background:white;
+    animation: twinkle 2s infinite;
+}
+@keyframes twinkle{
+    50%{opacity:0;}
+}
+
+/* Love jatuh */
+.love{
+    position:absolute;
+    color:pink;
+    font-size:5vw;
+    animation: fall 6s linear infinite;
+}
+@keyframes fall{
+    0%{transform:translateY(-10vh);}
+    100%{transform:translateY(100vh);}
+}
+
+button{
+    font-size:4vw;
+    padding:10px 20px;
+    border:none;
+    border-radius:10px;
+    background:pink;
+}
+</style>
+</head>
+
+<body onclick="playMusic(); document.documentElement.requestFullscreen();">
+
+<audio id="bgm" loop>
+    <source src="musik.mp3" type="audio/mpeg">
+</audio>
+
+<div id="text">Klik layar untuk mulai</div>
+
+<script>
+let text = document.getElementById("text");
+
+// Musik
+function playMusic(){
+    document.getElementById("bgm").play();
+}
+
+// Bintang
+for(let i=0;i<130;i++){
+    let s=document.createElement("div");
+    s.className="star";
+    s.style.top=Math.random()*100+"vh";
+    s.style.left=Math.random()*100+"vw";
+    document.body.appendChild(s);
+}
+
+// Love jatuh
+setInterval(()=>{
+    let l=document.createElement("div");
+    l.className="love";
+    l.innerHTML="❤";
+    l.style.left=Math.random()*100+"vw";
+    document.body.appendChild(l);
+    setTimeout(()=>l.remove(),6000);
+},400);
+
+// Efek ketik
+function ketik(teks, callback){
+    let i=0;
+    text.innerHTML="";
+    function ngetik(){
+        if(i<teks.length){
+            text.innerHTML += teks.charAt(i);
+            i++;
+            setTimeout(ngetik,90);
+        }else{
+            if(callback) setTimeout(callback,1300);
+        }
+    }
+    ngetik();
+}
+
+// Mulai cerita setelah klik
+document.body.addEventListener("click", startStory, { once:true });
+
+function startStory(){
+    ketik("Loading love system...", ()=>{
+        ketik("Initializing memory...", ()=>{
+            ketik("Preparing surprise...", ()=>{
+                ketik("3", ()=>{
+                    ketik("2", ()=>{
+                        ketik("1", ()=>{
+                            
+                            let nama = prompt("Masukkan namamu:");
+
+                            ketik("Hallo, " + nama, ()=>{
+                                ketik("Aku punya cerita untukmu...", ()=>{
+                                    ketik("Tentang seseorang yang sangat spesial...", ()=>{
+                                        ketik("Seseorang yang membuat hari-hariku lebih berwarna...", ()=>{
+                                            ketik("Seseorang yang membuatku tersenyum, kadang ada jengkelnya sii", ()=>{
+                                                ketik("Dan orang itu adalah kamu...", ()=>{
+                                                    ketik("Di hari ulang tahunmu ini...", ()=>{
+                                                        ketik("Aku hanya ingin mengatakan...", ()=>{
+                                                            ketik("Terima kasih sudah hadir di kehidupanku..", ()=>{
+                                                                ketik("Terima kasih sudah menjadi dirimu...", ()=>{
+                                                                    ketik("Aku mungkin tidak sempurna...", ()=>{
+                                                                        ketik("Tapi aku akan selalu berusaha membuatmu bahagia...", ()=>{
+                                                                            
+                                                                            text.innerHTML = `
+                                                                            <h1>Aku Menyayangimu ❤️</h1>
+                                                                            <button onclick="rahasia()">Klik Rahasia</button>
+                                                                            `;
+                                                                        });
+                                                                    });
+                                                                });
+                                                            });
+                                                        });
+                                                    });
+                                                });
+                                            });
+                                        });
+                                    });
+                                });
+                            });
+
+                        });
+                    });
+                });
+            });
+        });
+    });
+}
+
+function rahasia(){
+    text.innerHTML = "<h1>Semoga kamu selalu bahagia 🎂</h1><h2>From: fahmi_N</h2>";
+}
+</script>
+
+</body>
+</html>
