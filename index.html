@@ -1,42 +1,161 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>System Boot</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fahmi Dev | Future Tech</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
 <style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins', sans-serif;
+}
+
 body{
-  background:black;
-  color:#00ff9c;
-  font-family:monospace;
+  background: linear-gradient(270deg, #0f2027, #203a43, #2c5364);
+  background-size: 600% 600%;
+  animation: gradientMove 10s ease infinite;
+  color:white;
+  overflow-x:hidden;
+}
+
+/* ANIMASI BACKGROUND */
+@keyframes gradientMove {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* NAV */
+nav{
+  display:flex;
+  justify-content:space-between;
+  padding:20px 40px;
+}
+
+nav h2{
+  color:#00f7ff;
+}
+
+/* HERO */
+.hero{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+
+/* TEXT ANIMASI */
+.title{
+  font-size:3rem;
+  background: linear-gradient(90deg,#00f7ff,#00ff88);
+  -webkit-background-clip:text;
+  color:transparent;
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow{
+  from{ text-shadow:0 0 10px #00f7ff;}
+  to{ text-shadow:0 0 25px #00ff88;}
+}
+
+/* TYPING */
+#typing{
+  margin-top:15px;
+  font-size:1.2rem;
+  opacity:0.8;
+}
+
+/* BUTTON */
+.btn{
+  margin-top:25px;
+  padding:12px 30px;
+  border-radius:30px;
+  background:linear-gradient(45deg,#00f7ff,#00ff88);
+  color:black;
+  text-decoration:none;
+  transition:0.3s;
+}
+
+.btn:hover{
+  transform:scale(1.1);
+}
+
+/* CARD */
+.features{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  padding:60px 20px;
+}
+
+.card{
+  width:260px;
+  margin:15px;
   padding:20px;
+  border-radius:15px;
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(10px);
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-10px) scale(1.05);
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:30px;
+  opacity:0.7;
 }
 </style>
 </head>
+
 <body>
 
-<div id="boot"></div>
+<nav>
+  <h2>⚡ Fahmi Dev</h2>
+  <div>Future Tools</div>
+</nav>
+
+<section class="hero">
+  <h1 class="title">Build The Future</h1>
+  <p id="typing"></p>
+  <a href="#" class="btn">🚀 Explore</a>
+</section>
+
+<section class="features">
+  <div class="card">⚡ Fast Development</div>
+  <div class="card">🧠 Smart Automation</div>
+  <div class="card">🌐 Networking Tools</div>
+  <div class="card">🤖 AI Integration</div>
+</section>
+
+<footer>
+  © 2026 Fahmi Dev | All Rights Reserved
+</footer>
 
 <script>
-const text = [
-"Booting system...",
-"Loading modules...",
-"Accessing secure server...",
-"Decrypting data...",
-"Initializing interface...",
-"Welcome Fahmi Dev",
-"Redirecting to login..."
-];
-
+// TYPING EFFECT
+const text = "Developer | Networking | Linux | AI Tools | Automation";
 let i = 0;
-function boot(){
+
+function typing(){
   if(i < text.length){
-    document.getElementById("boot").innerHTML += text[i] + "<br>";
+    document.getElementById("typing").innerHTML += text.charAt(i);
     i++;
-    setTimeout(boot, 800);
-  } else {
-    window.location = "login.html";
+    setTimeout(typing, 50);
   }
 }
-boot();
+
+typing();
 </script>
 
 </body>
